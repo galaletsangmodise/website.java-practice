@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gali's Heart</title>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+
+}
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #0a0010;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+}
+#title {
+    font-size: clamp(20px, 6vw, 36px);
+    color: #ff6b9d;
+    font-style: italic;
+    margin-bottom: 20px;
+    z-index: 10;
+    letter-spacing: 4px;
+    animation: titlePulse 2s ease-in-out infinite;
+    text-shadow: 0 0 4px #ff6b9d, 0 0 8px #ff3377, 0 0 16px #ff0055;
+}
+@keyframes titlePulse {
+    0%, 100% {
+        text-shadow: 0 0 10px #ff6b9d, 0 0 25px #ff3377, 0 0 50px #ff0055;
+    }
+    50% {
+        text-shadow: 0 0 20px #ff6b9d, 0 0 45px #ff3377, 0 0 80px #ff0055;
+    }
+}
+#container {
+    position: relative;
+    width: 90vmin;
+    height: 85vmin;
+}
+.word {
+    position: absolute;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: bold;
+    color: #ff6b9d;
+    white-space: nowrap;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+
+ text-shadow : 
+ 0 0 6px #ff6b9d, 
+ 0 0 12px #ff3377, 
+ 0 0 24px #ff0055;
+
+ animation: fadeGlow 3s ease-in-out infinite;
+}
+@keyframes fadeGlow {
+    0% {
+        opacity: 0;
+        text-shadow: 0 0 4px #ff6b9d;
+    }
+    30% {
+        opacity: 1;
+        text-shadow: 0 0 8px #ff6b9d, 0 0 18px #ff3377, 0 0 32px #ff0055;
+    }
+    70% {
+        opacity: 1;
+        text-shadow: 0 0 8px #ff6b9d, 0 0 18px #ff3377, 0 0 32px #ff0055;
+    }
+    100% {
+        opacity: 0;
+        text-shadow: 0 0 4px #ff6b9d;
+    }
+}
+
+/*Stars*/
+.star {
+    position: fixed;
+    width: 2px;
+    height: 2px;
+    background-color: rgb(255, 150, 180, 0.4);
+    border-radius: 50%;
+    animation: twinkle var(--dur) ease-in-out infinite;
+}
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.2; transform: scale(1);  
+    }
+    50% {
+        opacity: 1; transform: scale(1.4);
+    }
+}
+    </style>
+</head>
+<body>
+    <h1 id="title">Gali's Heart</h1>
+    <div id="container"></div>
+    <script>
+        for (let i = 0; i < 100; i++) {
+        const star = document.createElement("div");
+        star.className ="star";
+        star.style.left = Math.random() * 100 + "vw";
+        star.style.top = Math.random() * 100 + "vh";
+        
+        star.style.setProperty('--dur', (2 + Math.random() * 4) + "s");
+        star.style.animationDelay = Math.random() * 4 + "s";
+        document.body.appendChild(star);
+    }
+//heart math
+    function heartPoint(t) {
+        const x = 16 * Math.pow(Math.sin(t), 3);
+        const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+        return [x, y];
+    }
+//responsive font size
+    const vmin = Math.min(window.innerWidth, window.innerHeight);
+    const containerSize = vmin * 0.9;
+
+    const centerX = containerSize / 2;
+    const centerY = containerSize * 0.52;
+    const scale = containerSize / 36;
+    const count = 60;
+
+//font size scale
+    const baseFontSize = vmin * 0.028;
+    const container = document.getElementById("container"); 
+//outer heart
+    for (let i = 0; i < count; i++) {
+        const t = (i / count) * 2 * Math.PI;
+        const [x, y] = heartPoint(t);
+
+        const word = document.createElement("div");
+        word.className = "word";
+        word.textContent = "I Love You";
+        word.style.left = (centerX + x * scale) + "px";
+        word.style.top = (centerY + y * scale) + "px";
+        word.style.fontSize = (baseFontSize() * 3) + "px";  
+        word.style.animationDelay = (i * 0.05) + "s";
+        word.style.animationDuration = (2.5 + Math.random() * 2) + "s";
+
+        const angle = Math.atan2(y, x) * (180 / Math.PI);
+        word.style.transform = `translate(-50%, -50%)`;
+        container.appendChild(word);
+    }
+//Innerfill
+    for( let r = 0.4; r < 1; r += 0.35) {
+        const innerCount = Math.floor(count * r * 0.5);
+        for (let i = 0; i < innerCount; i++) {
+            const t = (i / innerCount) * 2 * Math.PI;
+            const {x, y} = heartPoint(t);
+
+            const word = document.createElement("div");
+            word.className = "word";
+            word.textContent = "I Love You";
+            word.style.left = (centerX + x * scale * r) + "px";
+            word.style.top = (centerY + y * scale * r) + "px";
+            word.style.fontSize = (baseFontSize() * 2) + "px";
+            word.style.animationDelay = (Math.random() * 3) + "s";
+            word.style.animationDuration = (2 + Math.random() * 3) + "s";
+            word.style.transform = `translate(-50%, -50%)`;
+            word.style.color = `rgba(255, 120, 160, ${0.6 + r * 0.4})`;
+
+            container.appendChild(word);
+        }
+
+    }
+    </script>
+</body>
+</html>
