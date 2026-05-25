@@ -140,10 +140,10 @@ body {
 
         const word = document.createElement("div");
         word.className = "word";
-        word.textContent = "I Love You";
+        word.textContent = "Z";
         word.style.left = (centerX + x * scale) + "px";
         word.style.top = (centerY + y * scale) + "px";
-        word.style.fontSize = (baseFontSize() * 3) + "px";  
+        word.style.fontSize = (baseFontSize * 1) + "px";  
         word.style.animationDelay = (i * 0.05) + "s";
         word.style.animationDuration = (2.5 + Math.random() * 2) + "s";
 
@@ -160,10 +160,10 @@ body {
 
             const word = document.createElement("div");
             word.className = "word";
-            word.textContent = "I Love You";
+            word.textContent = "Z";
             word.style.left = (centerX + x * scale * r) + "px";
             word.style.top = (centerY + y * scale * r) + "px";
-            word.style.fontSize = (baseFontSize() * 2) + "px";
+            word.style.fontSize = (baseFontSize * 2) + "px";
             word.style.animationDelay = (Math.random() * 3) + "s";
             word.style.animationDuration = (2 + Math.random() * 3) + "s";
             word.style.transform = `translate(-50%, -50%)`;
